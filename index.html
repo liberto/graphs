@@ -26,8 +26,8 @@
   <body>
       <script type="text/javascript">
       var names = ["Abe","Betty","Carl","Danube","Ezra","Flavio","Garrett","Hallie",
-        "Ignatius","Jim","Karl","Linnea","Molly","Owen","Pete","Quinn","Russell","Spencer",
-        "Teri","Ursula","Violet","Wellington","Xavier","Yolinda","Zachariah"]
+        "Ignatius","Jim","Karl","Linnea","Molly","Nelly","Owen","Pete","Quinn","Russell",
+        "Spencer","Teri","Ursula","Violet","Wellington","Xavier","Yolinda","Zachariah"]
 
       //Dynamic, random dataset
       var dataset = [];
@@ -123,15 +123,26 @@
         gravity: 'n', 
         html: true, 
         title: function() {
-          return this.getAttribute("givenName")
+          heren = this.getAttribute("givenName");
+          herey = this.getAttribute("cy");
+          if (herey>300){
+            return heren + " is quite small."
+          }
+          else
+          {
+            return heren + " is huge!"
+          }
+          // if x<500 {
+          //   return n + " is huge!";
+          // }
+          // else {
+          //   return n + " is quite small.";
+          // }
         }
       });
 
 
   </script>
-  <div>
-
-  <p class='this-is-also-a-class'>This is what I made after <a href="http://spencerliber.to/index.php/2016/01/07/learning-d3/">learning about D3</a> for a few hours. It should generate new data points every time you refresh the page.</p></div>
 
 </body>
 </html>     
