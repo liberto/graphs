@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Spencer Made A Meaningless Graph</title>
+    <script type="text/javascript" src="libs/d3.v3.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
+    <script type="text/javascript" src="libs/tipsy.js"></script>
+    <link href="libs/tipsy.css" rel="stylesheet" type="text/css" />
+  </head>
+  <style>
+  p {
+    width: 500px;
+  }
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+  }
+  .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+  </style>
+  <body>
+      <script type="text/javascript">
+      var names = ["Abe","Betty","Carl","Danube","Ezra","Flavio","Garrett","Hallie",
+        "Ignatius","Jim","Karl","Linnea","Molly","Owen","Pete","Quinn","Russell","Spencer",
+        "Teri","Ursula","Violet","Wellington","Xavier","Yolinda","Zachariah"]
+
+      //Dynamic, random dataset
+      var dataset = [];
+      var numDataPoints = 26;
+      var xRange = Math.random() * 1000;
+      var yRange = Math.random() * 1000;
+      for (var i = 0; i < numDataPoints; i++) {
+          var newNumber1 = Math.round(Math.random() * xRange);
+          var newNumber2 = Math.round(Math.random() * yRange);
+          dataset.push([newNumber1, newNumber2]);
+      }
+
+      var w = 500;
+      var h = 500;
+      var padding = 30;
+
+      var textDisplay;
+
+      var xScale = d3.scale.linear()
+        .domain([0,d3.max(dataset,function(d){return d[0]; })])
+        .range([padding,w-padding*2]);
+      
+      
+      var yScale = d3.scale.linear()
+        .domain([0,d3.max(dataset,function(d){return d[1]; })])
+        .range([h-padding,padding]);
+
+      var rScale = d3.scale.linear()
+        .domain([0, d3.max(dataset, function(d) {return d[1];})])
+        .range([2,10]);
+
+
+      var xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")
+        .ticks(5);
+
+      var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(5);
+
+
+      //Create SVG element
+      var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+
+      svg.selectAll("circle")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("givenName",function(d,i){return names[i]})
+        .attr("cx",function(d){
+          return xScale(d[0]);
+        })
+        .attr("cy",function(d){
+          return yScale(d[1]);
+        })
+        .attr("r",function(d){
+          return rScale(d[1]);
+        })
+        .on("mouseover", function(d,i){
+          d3.select(this).transition()
+            .ease("elastic")
+            .duration("500")
+            .attr("r",30)
+            .attr("fill","teal");
+          
+        })
+        .on("mouseout", function(d,i){
+          d3.select(this).transition()
+            .ease("quad")
+            .delay("100")
+            .duration("200")
+            .attr("r",rScale(d[1]))
+            .attr("fill","black");;
+        });
+
+      svg.append("g")
+        .attr("class","axis")
+        .attr("transform", "translate(0," +(h-padding)+")")
+        .call(xAxis);
+
+      svg.append("g")
+        .attr("class","axis")
+        .attr("transform", "translate("+padding+",0)")
+        .call(yAxis);
+
+      $('circle').tipsy({ 
+        gravity: 'n', 
+        html: true, 
+        title: function() {
+          return this.getAttribute("givenName")
+        }
+      });
+
+
+  </script>
+  <div>
+
+  <p class='this-is-also-a-class'>This is what I made after <a href="http://spencerliber.to/index.php/2016/01/07/learning-d3/">learning about D3</a> for a few hours. It should generate new data points every time you refresh the page.</p></div>
+
+</body>
+</html>     
